@@ -30,6 +30,7 @@ jobs:
       - name: Checkout the repo 
         uses: docker/docker-build-push@v5
         with:
+          directory: ./Puc.Mercadinho
           dockerfile: ./Puc.Mercadinho/Puc.Mercadinho.Api/Dockerfile
         
       - name: Build container image

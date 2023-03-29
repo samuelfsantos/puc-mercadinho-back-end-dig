@@ -1,0 +1,19 @@
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["Puc.Mercadinho.Api.csproj", "./"]
+RUN dotnet restore "Puc.Mercadinho.Api.csproj"
+COPY . .
+WORKDIR "/src/."
+RUN dotnet build "Puc.Mercadinho.Api.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "Puc.Mercadinho.Api.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Puc.Mercadinho.Api.dll"]

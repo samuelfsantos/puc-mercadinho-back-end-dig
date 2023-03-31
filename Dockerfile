@@ -5,17 +5,45 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY ["Puc.Mercadinho/Puc.Mercadinho.Api/Puc.Mercadinho.Api.csproj", "Puc.Mercadinho.Api/"]
-RUN dotnet restore "Puc.Mercadinho/Puc.Mercadinho.Api/Puc.Mercadinho.Api.csproj"
+WORKDIR /code
+# Copy and restore as distinct layers
+COPY ["Puc.Mercadinho/Puc.Mercadinho.Api/Puc.Mercadinho.Api.csproj", "Puc.Mercadinho/Puc.Mercadinho.Api/Puc.Mercadinho.Api.csproj"]
+COPY ["Puc.Mercadinho/Puc.Mercadinho.Test/Puc.Mercadinho.Test.csproj", "Puc.Mercadinho/Puc.Mercadinho.Test/Puc.Mercadinho.Test/"]
+
+RUN dotnet restore "Puc.Mercadinho/Puc.Mercadinho.Api/Puc.Mercadinho.Api.csproj" -r linux-musl-x64
+RUN dotnet restore "Puc.Mercadinho/Puc.Mercadinho.Test/Puc.Mercadinho.Test.csproj" -r linux-musl-x64
 COPY . .
-WORKDIR "/src/Puc.Mercadinho/Puc.Mercadinho.Api"
-RUN dotnet build "Puc.Mercadinho/Puc.Mercadinho.Api.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "Puc.Mercadinho.Api.csproj" -c Release -o /app/publish
+# Build
+RUN dotnet build \
+    "Puc.Mercadinho/Puc.Mercadinho.Api/Puc.Mercadinho.Api.csproj" \
+    -c Release \
+    --runtime linux-musl-x64 \
+    --no-restore
+	
+RUN dotnet build \
+    "Puc.Mercadinho/Puc.Mercadinho.Test/Puc.Mercadinho.Test.csproj" \
+    -c Release \
+    -r linux-musl-x64 \
+    --no-restore
 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Puc.Mercadinho.Api.dll"]
+
+# Api mercadinho runner
+FROM build AS puc-mercadinho-api
+WORKDIR /code/Puc.Mercadinho/Puc.Mercadinho.Api
+ENTRYPOINT dotnet \
+    -c Release \
+    --runtime linux-musl-x64 \
+    --no-restore \
+    --no-build
+
+
+# Unit test runner
+FROM build AS puc-mercadinho-teste
+WORKDIR /code/Puc.Mercadinho/Puc.Mercadinho.Test
+ENTRYPOINT dotnet test \
+    -c Release \
+    --runtime linux-musl-x64 \
+    --no-restore \
+    --no-build \
+    --logger "trx;LogFileName=test_results_unit_test.trx"

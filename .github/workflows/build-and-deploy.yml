@@ -28,10 +28,7 @@ jobs:
     steps:
         
       - name: Checkout the repo 
-        uses: docker/docker-build-push@v5
-        with:
-          directory: ./Puc.Mercadinho
-          dockerfile: ./Puc.Mercadinho/Puc.Mercadinho.Api/Dockerfile
+        uses: actions/checkout@v2
         
       - name: Build container image
         run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
@@ -73,7 +70,7 @@ jobs:
             # Remove old container
             docker rm $(echo $IMAGE_NAME)
             # Run a new container from a new image
-            docker run -dt -p 80:80 \
+            docker run -dt -p 5001:80 \
             --restart always \
             --name $(echo $IMAGE_NAME) \
             $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)            

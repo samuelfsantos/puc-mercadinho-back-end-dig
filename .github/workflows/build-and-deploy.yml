@@ -54,19 +54,19 @@ jobs:
       - name: Push image to DigitalOcean Container Registry
         run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME_API):$(echo $GITHUB_SHA | head -c7)
        
+       
   unit_tests:
     runs-on: ubuntu-latest
     needs: build_and_push
     
     steps:
-    - name: Unit tests [publish]
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: Unit tests
-          path: ${{ github.workspace }}/path/to/artifacts/testresults/test_results_unit_test.trx
-          reporter: dotnet-trx
-          token: ${{ secrets.GITHUB_TOKEN }}
+       - name: Unit tests [publish]
+         uses: dorny/test-reporter@v1
+         if: always()
+         with:
+           name: Unit tests
+           path: ${{ github.workspace }}/path/to/artifacts/testresults/test_results_unit_test.trx
+       
        
   deploy:
     runs-on: ubuntu-latest

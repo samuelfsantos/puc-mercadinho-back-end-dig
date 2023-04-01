@@ -35,9 +35,8 @@ jobs:
       - name: Build image api
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: Puc.Mercadinho/Puc.Mercadinho.Api
           dockerfile: Puc.Mercadinho/Puc.Mercadinho.Api/Dockerfile 
-          push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_API }}:${{ github.sha }}  
         
       - name: Install doctl

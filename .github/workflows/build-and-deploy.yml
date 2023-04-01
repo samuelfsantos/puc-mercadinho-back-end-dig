@@ -28,7 +28,9 @@ jobs:
     
     steps:        
       - name: Checkout the repo 
-        uses: actions/checkout@v2        
+        uses: actions/checkout@v2
+        with:
+          path: Puc.Mercadinho/Puc.Mercadinho.Api/Dockerfile 
         
       - name: Build image api
         uses: docker/build-push-action@v2

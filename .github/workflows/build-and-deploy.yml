@@ -36,7 +36,7 @@ jobs:
           context: .
           dockerfile: Puc.Mercadinho/Puc.Mercadinho.Api/Dockerfile 
           push: true
-          tags: (echo $REGISTRY)/$(echo $IMAGE_NAME_API):$(echo $GITHUB_SHA | head -c7)    
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_API }}:${{ github.sha }}  
         
       - name: Install doctl
         uses: digitalocean/action-doctl@v2

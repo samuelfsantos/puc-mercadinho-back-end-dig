@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  api-mercadinho:
+    build: 
+      context: .
+      dockerfile: Puc.Mercadinho/Puc.Mercadinho.Api/Dockerfile
+    image: registry.digitalocean.com/dcr-samuel/puc-mercadinho-api:latest
+    ports:
+      - "5001:80"

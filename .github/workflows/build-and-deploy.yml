@@ -29,11 +29,9 @@ jobs:
     steps:        
       - name: Checkout the repo 
         uses: actions/checkout@v2
-        with:
-          path: Puc.Mercadinho/Puc.Mercadinho.Api/Dockerfile 
         
       - name: Build image api
-        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_API }}:${{ github.sha }} . 
+        run: docker-compose up -d
         
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
@@ -50,7 +48,7 @@ jobs:
         run: if [ ! -z "$(doctl registry repository list | grep "$(echo $IMAGE_NAME_API)")" ]; then doctl registry repository delete-manifest $(echo $IMAGE_NAME_API) $(doctl registry repository list-tags $(echo $IMAGE_NAME_API) | grep -o "sha.*") --force; else echo "No repository"; fi
 
       - name: Push image to DigitalOcean Container Registry
-        run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME_API):$(echo $GITHUB_SHA | head -c7)
+        run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME_API):latest
 
        
   deploy:
@@ -76,4 +74,10 @@ jobs:
             docker run -dt -p 5001:80 \
             --restart always \
             --name $(echo $IMAGE_NAME_API) \
-            $(echo $REGISTRY)/$(echo $IMAGE_NAME_API):$(echo $GITHUB_SHA | head -c7)            
+            $(echo $REGISTRY)/$(echo $IMAGE_NAME_API):latest            
+            
+            
+            
+            
+            
+    

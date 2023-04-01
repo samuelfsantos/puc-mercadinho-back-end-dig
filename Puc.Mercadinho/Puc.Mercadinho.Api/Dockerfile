@@ -1,21 +1,20 @@
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+# Base image
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY ["Puc.Mercadinho.Api.csproj", "./"]
-RUN dotnet restore "Puc.Mercadinho.Api.csproj"
+# Copy project file and restore dependencies
+COPY *.csproj .
+RUN dotnet restore
+
+# Copy source code and build application
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "Puc.Mercadinho.Api.csproj" -c Release -o /app/build
+RUN dotnet publish -c Release -o out
 
-FROM build AS publish
-RUN dotnet publish "Puc.Mercadinho.Api.csproj" -c Release -o /app/publish
-
-FROM base AS final
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app/out .
 ENTRYPOINT ["dotnet", "Puc.Mercadinho.Api.dll"]

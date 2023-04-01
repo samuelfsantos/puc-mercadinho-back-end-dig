@@ -20,7 +20,6 @@ env:
   REGISTRY: "registry.digitalocean.com/dcr-samuel"
   IMAGE_NAME_PAGINA_TESTE: "pagina-teste"
   IMAGE_NAME_API: "puc-mercadinho-api"
-  IMAGE_NAME_TESTE: "puc-mercadinho-teste"
 
 #3
 jobs:
@@ -30,12 +29,12 @@ jobs:
     steps:        
       - name: Checkout the repo 
         uses: actions/checkout@v2
+        with:
+          context: .
+          dockerfile: Puc.Mercadinho/Puc.Mercadinho.Api/Dockerfile        
         
       - name: Build container image api
-        run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME_API):$(echo $GITHUB_SHA | head -c7) .
-        
-      - name: Build container image testes
-        run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME_TESTE):$(echo $GITHUB_SHA | head -c7) .
+        run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME_API):$(echo $GITHUB_SHA | head -c7) .        
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
@@ -53,20 +52,7 @@ jobs:
 
       - name: Push image to DigitalOcean Container Registry
         run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME_API):$(echo $GITHUB_SHA | head -c7)
-       
-       
-  unit_tests:
-    runs-on: ubuntu-latest
-    needs: build_and_push
-    
-    steps:
-       - name: Unit tests [publish]
-         uses: dorny/test-reporter@v1
-         if: always()
-         with:
-           name: Unit tests
-           path: ${{ github.workspace }}/path/to/artifacts/testresults/test_results_unit_test.trx
-       
+
        
   deploy:
     runs-on: ubuntu-latest

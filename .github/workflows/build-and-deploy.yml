@@ -33,11 +33,7 @@ jobs:
           path: Puc.Mercadinho/Puc.Mercadinho.Api/Dockerfile 
         
       - name: Build image api
-        uses: docker/build-push-action@v2
-        with:
-          context: Puc.Mercadinho/Puc.Mercadinho.Api
-          dockerfile: Puc.Mercadinho/Puc.Mercadinho.Api/Dockerfile 
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_API }}:${{ github.sha }}  
+        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_API }}:${{ github.sha }} . 
         
       - name: Install doctl
         uses: digitalocean/action-doctl@v2

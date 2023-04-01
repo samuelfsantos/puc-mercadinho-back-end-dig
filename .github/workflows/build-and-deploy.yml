@@ -28,14 +28,16 @@ jobs:
     
     steps:        
       - name: Checkout the repo 
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2        
+        
+      - name: Build image api
+        uses: docker/build-push-action@v2
         with:
           context: .
-          dockerfile: Puc.Mercadinho/Puc.Mercadinho.Api/Dockerfile        
+          dockerfile: Puc.Mercadinho/Puc.Mercadinho.Api/Dockerfile 
+          push: true
+          tags: (echo $REGISTRY)/$(echo $IMAGE_NAME_API):$(echo $GITHUB_SHA | head -c7) .        
         
-      - name: Build container image api
-        run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME_API):$(echo $GITHUB_SHA | head -c7) .        
-
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:

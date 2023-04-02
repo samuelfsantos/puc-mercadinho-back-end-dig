@@ -42,6 +42,22 @@ namespace Puc.Mercadinho.Api.Controllers
             }
         }
 
+        [HttpGet("testar")]
+        public IActionResult Testar()
+        {
+            try
+            {
+
+                var result = "Esta API está funcionando!";
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
         //[HttpGet("obter-url-img")]
         //public IActionResult ObterUrlImg(string fileName)
         //{

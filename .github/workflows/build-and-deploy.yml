@@ -28,15 +28,15 @@ jobs:
     
     steps:        
       - name: Checkout the repo 
-        uses: actions/checkout@v2
-        
-      - name: Build image api
-        run: docker-compose -f docker-compose.yml build
+        uses: actions/checkout@v2        
         
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    
+      - name: Build image api
+        run: docker-compose -f docker-compose.yml build
     
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 600

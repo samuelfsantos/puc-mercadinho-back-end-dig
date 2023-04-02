@@ -1,10 +1,15 @@
-version: '3.8'
+version: "3"
 
 services:
-  api-mercadinho:
-    build: 
-      context: .
-      dockerfile: Puc.Mercadinho/Puc.Mercadinho.Api/Dockerfile
-    image: registry.digitalocean.com/dcr-samuel/puc-mercadinho-api:latest
-    ports:
-      - "5001:80"
+
+    api-mercadinho:
+        image: registry.digitalocean.com/dcr-samuel/puc-mercadinho-api:latest
+        container_name: puc-mercadinho-api
+        build: 
+            context: Puc.Mercadinho
+            dockerfile: ./Puc.Mercadinho.Api/Dockerfile
+        ports:
+            - "5001:5001"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Production
+            - ASPNETCORE_URLS=http://*:5001

@@ -8,6 +8,8 @@ services:
         build: 
             context: Puc.Mercadinho
             dockerfile: ./Puc.Mercadinho.Api/Dockerfile
+            args:
+                MY_TAG: latest
         ports:
             - "5001:5001"
         environment:

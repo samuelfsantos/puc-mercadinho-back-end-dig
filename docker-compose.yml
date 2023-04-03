@@ -3,11 +3,13 @@ version: "3"
 services:
 
     api-mercadinho:
-        image: registry.digitalocean.com/dcr-samuel/puc-mercadinho-api:${{ env.IMAGE_TAG }}
+        image: registry.digitalocean.com/dcr-samuel/puc-mercadinho-api:${TAG}
         container_name: puc-mercadinho-api
         build: 
             context: Puc.Mercadinho
             dockerfile: ./Puc.Mercadinho.Api/Dockerfile
+            args:
+                - TAG=${TAG}
         ports:
             - "5001:5001"
         environment:

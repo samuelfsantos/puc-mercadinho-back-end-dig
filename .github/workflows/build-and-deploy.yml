@@ -46,9 +46,9 @@ jobs:
 
       - name: Build image api
         run: docker-compose -f docker-compose.yml build
-
+        
       - name: Push image to DigitalOcean Container Registry
-        run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME_API):latest
+        run: docker-compose -f docker-compose.yml push
 
        
   deploy:

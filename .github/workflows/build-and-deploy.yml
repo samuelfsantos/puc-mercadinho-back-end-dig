@@ -35,12 +35,11 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
     
-      - name: Generate new tag
-        id: generate_tag
-        run: echo ::set-output name=tag::$(echo $GITHUB_SHA | head -c7)
+      - name: Set DOCKER_TAG environment variable
+        run: echo ::set-env name=DOCKER_TAG::${{ github.sha }}
     
       - name: Build image api
-        run: docker-compose -f docker-compose.yml build --build-arg TAG=${{ steps.generate_tag.outputs.tag }}
+        run: docker-compose -f docker-compose.yml build
     
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 600

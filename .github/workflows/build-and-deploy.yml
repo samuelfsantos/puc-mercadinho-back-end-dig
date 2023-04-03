@@ -48,7 +48,7 @@ jobs:
         run: if [ ! -z "$(doctl registry repository list | grep "$(echo $IMAGE_NAME_API)")" ]; then doctl registry repository delete-manifest $(echo $IMAGE_NAME_API) $(doctl registry repository list-tags $(echo $IMAGE_NAME_API) | grep -o "sha.*") --force; else echo "No repository"; fi
 
       - name: Push image to DigitalOcean Container Registry
-        run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME_API): ${{ github.sha }}
+        run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME_API):${{ github.sha }}
 
        
   deploy:
@@ -74,7 +74,7 @@ jobs:
             docker run -dt -p 5001:80 \
             --restart always \
             --name $(echo $IMAGE_NAME_API) \
-            $(echo $REGISTRY)/$(echo $IMAGE_NAME_API): ${{ github.sha }}            
+            $(echo $REGISTRY)/$(echo $IMAGE_NAME_API):${{ github.sha }}            
             
             
             

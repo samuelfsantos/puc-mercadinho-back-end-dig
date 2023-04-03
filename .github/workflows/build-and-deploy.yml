@@ -67,14 +67,14 @@ jobs:
             # Login to registry
             docker login -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} registry.digitalocean.com
             # Stop running container
-            docker stop $(echo $IMAGE_NAME_API):latest
+            docker stop $(echo $IMAGE_NAME_API)
             # Remove old container
-            docker rm $(echo $IMAGE_NAME_API):latest
+            docker rm $(echo $IMAGE_NAME_API)
             # Run a new container from a new image
             docker run -dt -p 5001:80 \
             --restart always \
-            --name $(echo $IMAGE_NAME_API):latest \
-            $(echo $REGISTRY)/$(echo $IMAGE_NAME_API):latest       
+            --name $(echo $IMAGE_NAME_API) \
+            $(echo $REGISTRY)/$(echo $IMAGE_NAME_API)       
             
             
             

@@ -48,7 +48,7 @@ namespace Puc.Mercadinho.Api.Controllers
             try
             {
 
-                var result = "Esta API está funcionando!!";
+                var result = "Esta API esta funcionando!";
 
                 return Ok(result);
             }

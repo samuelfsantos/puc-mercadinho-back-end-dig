@@ -35,7 +35,10 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
     
-      - name: Build image api
+      - name: Set tag name
+        run: echo ::set-env name=MY_TAG::${{ github.sha }}
+    
+      - name: Build and tag image api
         run: docker-compose -f docker-compose.yml build
     
       - name: Log in to DigitalOcean Container Registry with short-lived credentials

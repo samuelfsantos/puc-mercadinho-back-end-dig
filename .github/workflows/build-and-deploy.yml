@@ -20,7 +20,6 @@ env:
   REGISTRY: "registry.digitalocean.com/dcr-samuel"
   IMAGE_NAME_PAGINA_TESTE: "pagina-teste"
   IMAGE_NAME_API: "puc-mercadinho-api"
-  IMAGE_TAG: $(echo $GITHUB_SHA | head -c7) 
 
 #3
 jobs:

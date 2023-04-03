@@ -20,6 +20,7 @@ env:
   REGISTRY: "registry.digitalocean.com/dcr-samuel"
   IMAGE_NAME_PAGINA_TESTE: "pagina-teste"
   IMAGE_NAME_API: "puc-mercadinho-api"
+  IMAGE_TAG: $(echo $GITHUB_SHA | head -c7) 
 
 #3
 jobs:
@@ -43,10 +44,6 @@ jobs:
       
       - name: Remove all old images from other repositories
         run: if [ ! -z "$(doctl registry repository list | grep "$(echo $IMAGE_NAME_API)")" ]; then doctl registry repository delete-manifest $(echo $IMAGE_NAME_API) $(doctl registry repository list-tags $(echo $IMAGE_NAME_API) | grep -o "sha.*") --force; else echo "No repository"; fi
-
-      - name: Set image tag
-        run: |
-          echo ::set-env name=IMAGE_TAG::$(echo $GITHUB_SHA | head -c7) 
 
       - name: Build and Push Docker Image
         run: |

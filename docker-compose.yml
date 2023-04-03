@@ -3,7 +3,7 @@ version: "3"
 services:
 
     api-mercadinho:
-        image: registry.digitalocean.com/dcr-samuel/puc-mercadinho-api:latest
+        image: registry.digitalocean.com/dcr-samuel/puc-mercadinho-api:${{ github.sha }}
         container_name: puc-mercadinho-api
         build: 
             context: Puc.Mercadinho

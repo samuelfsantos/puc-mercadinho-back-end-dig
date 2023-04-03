@@ -3,7 +3,7 @@ version: "3"
 services:
 
     api-mercadinho:
-        image: registry.digitalocean.com/dcr-samuel/puc-mercadinho-api:${MY_TAG}
+        image: registry.digitalocean.com/dcr-samuel/puc-mercadinho-api:${TAG}
         container_name: puc-mercadinho-api
         build: 
             context: Puc.Mercadinho

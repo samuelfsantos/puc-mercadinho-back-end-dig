@@ -36,7 +36,7 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
     
       - name: Build and tag image api
-        run: docker-compose -f docker-compose.yml build
+        run: docker-compose -f docker-compose.yml build --build-arg TAG=${{ github.sha }}
     
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 600

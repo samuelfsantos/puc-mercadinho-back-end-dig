@@ -37,7 +37,7 @@ jobs:
     
       - name: Generate new tag
         id: generate_tag
-        run: echo ::set-output name=tag::$(echo ${{ github.event.after }} | cut -c1-7)
+        run: echo ::set-output name=tag::$(echo $GITHUB_SHA | head -c7)
     
       - name: Build image api
         run: docker-compose -f docker-compose.yml build --build-arg TAG=${{ steps.generate_tag.outputs.tag }}

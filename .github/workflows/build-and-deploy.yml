@@ -45,7 +45,6 @@ jobs:
         run: if [ ! -z "$(doctl registry repository list | grep "$(echo $IMAGE_NAME_API)")" ]; then doctl registry repository delete-manifest $(echo $IMAGE_NAME_API) $(doctl registry repository list-tags $(echo $IMAGE_NAME_API) | grep -o "sha.*") --force; else echo "No repository"; fi
 
       - name: Build and Push Docker Image
-        run: docker-compose -f docker-compose.yml build --push     
         run: |
           export IMAGE_TAG=${{ github.sha }}
           docker-compose -f docker-compose.yml build --pull
